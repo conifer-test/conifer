@@ -2,6 +2,7 @@
 
 const { program } = require('commander');
 const testFile = require('../src/commands/test-file');
+const createTestResults = require('../src/commands/create-test-results');
 
 program
   .command('init')
@@ -26,5 +27,11 @@ program
   .alias('td')
   .description('Taking down all Conifer infrastructure')
   .action(testFile);
+
+program
+  .command('results')
+  .alias('rs')
+  .description('Generating the test results')
+  .action(createTestResults);
 
 program.parse(process.argv);

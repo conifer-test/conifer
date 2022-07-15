@@ -1,8 +1,6 @@
-
-
-/// CDL CPde
-
+const chalk = require('chalk');
 
 module.exports = async () => {
-  console.log('Hello world');
+  console.log(`${chalk.cyan('Hello World')}`);
+  // console.log('Hello world');
 };

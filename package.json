@@ -12,6 +12,8 @@
     "eslint": "^8.19.0"
   },
   "dependencies": {
+    "aws-sdk": "^2.1175.0",
+    "chalk": "^4.1.2",
     "commander": "^9.3.0"
   }
 }
