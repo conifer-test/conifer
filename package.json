@@ -14,6 +14,16 @@
   "dependencies": {
     "aws-sdk": "^2.1175.0",
     "chalk": "^4.1.2",
-    "commander": "^9.3.0"
+    "chalk-animation": "^2.0.2",
+    "chalk-pipe": "^5.1.1",
+    "commander": "^9.3.0",
+    "dotenv": "^16.0.1",
+    "figlet": "^1.5.2",
+    "gradient-string": "^2.0.1",
+    "inquirer": "^8.2.4",
+    "nanospinner": "^1.1.0",
+    "ora": "^6.1.2",
+    "tinycolor": "^0.0.1",
+    "tinycolor2": "^1.4.2"
   }
 }
