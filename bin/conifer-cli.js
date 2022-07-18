@@ -1,32 +1,42 @@
 #!/usr/bin/env node
 
 const { program } = require('commander');
-const testFile = require('../src/commands/test-file');
+const init = require('../src/commands/init');
+const build = require('../src/commands/build');
+const deploy = require('../src/commands/deploy');
+const run = require('../src/commands/run');
+const teardown = require('../src/commands/teardown');
 const createTestResults = require('../src/commands/create-test-results');
 
 program
   .command('init')
   .alias('i')
   .description('Initialize files required to deploy conifer infrastructure')
-  .action(testFile);
+  .action(init);
+
+program
+  .command('build')
+  .alias('b')
+  .description('Build the conifer image')
+  .action(build);
 
 program
   .command('deploy')
   .alias('d')
   .description('Deploy conifer infrastructure in system')
-  .action(testFile);
+  .action(deploy);
 
 program
   .command('run')
   .alias('r')
   .description('Running cypress tests in parallel')
-  .action(testFile);
+  .action(run);
 
 program
   .command('teardown')
   .alias('td')
   .description('Taking down all Conifer infrastructure')
-  .action(testFile);
+  .action(teardown);
 
 program
   .command('results')
