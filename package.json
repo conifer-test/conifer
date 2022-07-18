@@ -27,6 +27,8 @@
     "nanospinner": "^1.1.0",
     "ora": "^6.1.2",
     "tinycolor": "^0.0.1",
-    "tinycolor2": "^1.4.2"
+    "tinycolor2": "^1.4.2",
+    "mochawesome-merge": "^4.2.1",
+    "mochawesome-report-generator": "^6.2.0"
   }
 }
