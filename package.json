@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "bin": {
-    "conifer": "./bin/confier-cli.js", 
+    "conifer": "./bin/confier-cli.js",
     "start_dashboard": ""
   },
   "scripts": {
@@ -24,11 +24,11 @@
     "figlet": "^1.5.2",
     "gradient-string": "^2.0.1",
     "inquirer": "^8.2.4",
-    "nanospinner": "^1.1.0",
-    "ora": "^6.1.2",
-    "tinycolor": "^0.0.1",
-    "tinycolor2": "^1.4.2",
     "mochawesome-merge": "^4.2.1",
-    "mochawesome-report-generator": "^6.2.0"
+    "mochawesome-report-generator": "^6.2.0",
+    "nanospinner": "^1.1.0",
+    "ora": "^5.4.1",
+    "tinycolor": "^0.0.1",
+    "tinycolor2": "^1.4.2"
   }
 }

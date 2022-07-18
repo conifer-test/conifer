@@ -1,8 +1,18 @@
 const inquirer = require('inquirer');
-const log = require('../utils/logger.js').logger;
 const { writeFileSync } = require('fs');
-
-const configFile = 'conifer-config.json';
+const log = require('../utils/logger.js').logger;
+const confierAscii = require('../utils/confierAscii');
+const {
+  cloneDeployRepo,
+  installCDK,
+  createConiferLocalDirectory,
+} = require('../utils/coniferInit');
+const ora = require('ora');
+const spinner = ora();
+const {
+  CONIFER_ENVIRONMENT_PATH,
+  CONIFER_CONFIG_FILE,
+} = require('../utils/coniferConfig');
 
 const awsQuestions = [
   {
@@ -25,16 +35,22 @@ const awsQuestions = [
 const getAwsCred = async () => {
   log('Please provide the following AWS credentials:');
   await inquirer.prompt(awsQuestions).then(async (answers) => {
-    // TODO: Write to .env
-    console.log(answers);
+    let envStr = '';
+    for (const [key, value] of Object.entries(answers)) {
+      envStr += key + '=' + value + '\n';
+    }
+    spinner.start();
+    writeFileSync(CONIFER_ENVIRONMENT_PATH, envStr);
+    spinner.succeed('Credentials saved to confier environment\n');
   });
 };
 
 const initQuestions = [
   {
     type: 'input',
-    name: 'directory',
-    message: 'What is your project directory:',
+    name: 'testDirectory',
+    message:
+      'What folder is your test files located relative to your project folder:',
   },
   {
     type: 'input',
@@ -56,13 +72,30 @@ const initQuestions = [
 
 const gatherInfo = async () => {
   log('Please provide the following information:');
-  await inquirer.prompt(initQuestions).then(async (answers) => {
-    writeFileSync(configFile, JSON.stringify(answers));
+  const pwd = await inquirer.prompt({
+    type: 'confirm',
+    name: 'projectDirectory',
+    message: 'Confirm your current working directory is your project folder:',
   });
+  if (!pwd.projectDirectory) {
+    log('Please go to the correct working directory then reinitialize');
+    process.exit();
+  } else {
+    await inquirer.prompt(initQuestions).then(async (answers) => {
+      writeFileSync(CONIFER_CONFIG_FILE, JSON.stringify(answers));
+    });
+  }
+};
+
+const newInit = async () => {
+  await createConiferLocalDirectory();
+  await getAwsCred();
+  await gatherInfo();
+  await cloneDeployRepo();
+  await installCDK();
 };
 
 module.exports = async () => {
-  // TODO: Create conifer ASCII
-  await getAwsCred();
-  await gatherInfo();
+  await confierAscii();
+  await newInit();
 };

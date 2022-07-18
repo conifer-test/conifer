@@ -1,1 +1,1 @@
-{"first_name":"samuelasdf","first_name2":"","overwrite":"diff","bacon":true,"favorite":"bacon"}
+{"testDirectory":"./tests/","entryPoint":"npm start","parallelInstances":"5","parallelType":"File globbing"}
