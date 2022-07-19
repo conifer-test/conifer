@@ -41,7 +41,7 @@ Running the test for the first time
   - Note - to figure this part out, query the data from the database
 
 - Once the test case is completed - we know this because of file watcher
-  - Upload the data into dynamoDB 
+  - Upload the json data into dynamoDB 
     - (use the test run id and sort key to find the file)
     - test run ID will come from a local file or somewhere else? 
     - test file will come from the file watcher? - the json file needs to have the same name as the spec file
