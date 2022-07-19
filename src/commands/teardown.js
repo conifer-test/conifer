@@ -1,6 +1,6 @@
 const inquirer = require('inquirer');
 const log = require('../utils/logger.js').logger;
-const { execSync } = require('child_process');
+const teardown = require('../utils/coniferTeardown');
 
 module.exports = async () => {
   const question = [
@@ -13,9 +13,9 @@ module.exports = async () => {
   ];
   await inquirer.prompt(question).then(async ({ confirmation }) => {
     if (confirmation) {
-      log('Tearing down Conifer from AWS...');
-      execSync('cdk destroy conifer');
-      log('Conifer torn down!');
+      teardown();
+    } else {
+      log('Teardown aborted');
     }
   });
 };

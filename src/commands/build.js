@@ -1,22 +1,28 @@
-const { groupTests, findAllTests } = require('../utils/coniferGlob');
+const {
+  fileGlob,
+  timingData,
+  buildImage,
+  pushToEcr,
+} = require('../utils/coniferBuild');
 const fs = require('fs');
-const ora = require('ora');
-const spinner = ora();
 
 const { CONIFER_CONFIG_FILE } = require('../utils/coniferConfig');
+let config;
+
+if (fs.existsSync(CONIFER_CONFIG_FILE)) {
+  config = JSON.parse(fs.readFileSync(CONIFER_CONFIG_FILE));
+}
 
 module.exports = async () => {
-  // Find tests to glob
-  spinner.start('Finding tests files to glob');
-  const testFiles = await findAllTests();
-  const globbedFiles = groupTests(testFiles);
-  fs.readFile(CONIFER_CONFIG_FILE, (err, data) => {
-    const json = JSON.parse(data);
-    json['testGroupings'] = globbedFiles;
-    fs.writeFileSync(CONIFER_CONFIG_FILE, JSON.stringify(json));
-  });
-  spinner.succeed('Completed globbing files');
-  // TODO: Build updated image
+  if (config.parallelType === 'File globbing') {
+    await fileGlob();
+  } else {
+    // TODO: Timing data
+    await timingData();
+  }
 
+  // TODO: Build updated image
+  await buildImage();
   // TODO: Push updated image to ECR
+  await pushToEcr();
 };

@@ -1,9 +1,11 @@
 const glob = require('glob');
 const fs = require('fs');
-const { CONIFER_LOCAL_DIRECTORY } = require('./coniferConfig');
-const config = JSON.parse(
-  fs.readFileSync(CONIFER_LOCAL_DIRECTORY + '/conifer-config.json')
-);
+const { CONIFER_CONFIG_FILE } = require('./coniferConfig');
+let config;
+
+if (fs.existsSync(CONIFER_CONFIG_FILE)) {
+  config = JSON.parse(fs.readFileSync(CONIFER_CONFIG_FILE));
+}
 
 const findAllTests = async () => {
   const { testDirectory } = config;
@@ -11,14 +13,18 @@ const findAllTests = async () => {
 };
 
 const groupTests = (testFiles) => {
-  const { parallelInstances } = config;
-  const testGroupings = new Array(parseInt(parallelInstances, 10)).fill([]);
+  let parallelInstances = parseInt(config.parallelInstances, 10);
+  if (parallelInstances > testFiles.length) {
+    parallelInstances = testFiles.length;
+  }
+
+  const testGroupings = new Array(parallelInstances).fill([]);
   testGroupings.forEach((_, index) => (testGroupings[index] = []));
 
   testFiles.forEach((testFile, index) => {
     testGroupings[index % parallelInstances].push(testFile);
   });
-  return testGroupings;
+  return [testGroupings, parallelInstances];
 };
 
 module.exports = { groupTests, findAllTests };

@@ -31,7 +31,7 @@ const createConiferLocalDirectory = async () => {
     fs.mkdirSync(DEPLOY_DIRECTORY);
     spinner.succeed('Conifer local directory created\n');
   } else {
-    spinner.fail('This project already contains conifer');
+    spinner.fail('This project already contains conifer\n');
   }
 };
 
