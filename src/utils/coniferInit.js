@@ -3,7 +3,7 @@ const Promisify = require('./promisify');
 const fs = require('fs');
 
 const spinner = ora();
-const DEPLOY_REPO = 'https://github.com/conifer-test/ecs-cdk.git';
+const DEPLOY_REPO = 'https://github.com/conifer-test/deploy.git';
 const { CONIFER_LOCAL_DIRECTORY } = require('./coniferConfig');
 const DEPLOY_DIRECTORY = `${CONIFER_LOCAL_DIRECTORY}/deploy`;
 

@@ -1,6 +1,7 @@
 const inquirer = require('inquirer');
 const log = require('../utils/logger.js').logger;
 const { deployAWSInfrastructure } = require('../utils/coniferDeploy');
+
 module.exports = async () => {
   const question = [
     {
@@ -16,7 +17,6 @@ module.exports = async () => {
       // TODO: Build image with dockerfile
       log('Building image complete');
       log('Deploying Conifer to AWS...');
-      // TODO: Within the CDK, use dotenv to dynamically deploy.
       await deployAWSInfrastructure();
       log('Conifer deployed');
     }

@@ -1,10 +1,11 @@
 const Promisify = require('./promisify.js');
 const ora = require('ora');
 const spinner = ora();
-const { CONIFER_LOCAL_DIRECTORY } = require('./coniferInit');
+const { CONIFER_LOCAL_DIRECTORY } = require('./coniferConfig');
 const CDK_OUTPUTS_PATH = `${CONIFER_LOCAL_DIRECTORY}/cdk_outputs.json`;
 
 const deployAWSInfrastructure = async () => {
+  process.chdir(CONIFER_LOCAL_DIRECTORY + '/deploy');
   spinner.start(
     'Deploying temporary resources to bootstrap your AWS deployments...'
   );

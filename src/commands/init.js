@@ -8,6 +8,8 @@ const {
   createConiferLocalDirectory,
 } = require('../utils/coniferInit');
 const ora = require('ora');
+const path = require('path');
+const CWD = process.cwd();
 const spinner = ora();
 const {
   CONIFER_ENVIRONMENT_PATH,
@@ -50,7 +52,7 @@ const initQuestions = [
     type: 'input',
     name: 'testDirectory',
     message:
-      'What folder is your test files located relative to your project folder:',
+      'What parent folder is your test files located relative to your project folder: (e.g., ./cypress)',
   },
   {
     type: 'input',
@@ -61,6 +63,17 @@ const initQuestions = [
     type: 'input',
     name: 'parallelInstances',
     message: 'How many parallel instances do you want to provision:',
+  },
+  {
+    type: 'list',
+    name: 'ec2InstanceType',
+    message: 'What type of EC2 instance do you want to provision:',
+    choices: [
+      { name: 't3.xlarge - 4 vCPU & 16 GiB', value: 't3.xlarge' },
+      { name: 't3.2xlarge - 8 vCPU & 32 GiB', value: 't3.2xlarge' },
+      { name: 'c6i.2xlarge - 8 vCPU & 16 GiB', value: 'c6i.2xlarge' },
+      { name: 'c6i.4xlarge - 16 vCPU & 32 GiB', value: 'c6i.4xlarge' },
+    ],
   },
   {
     type: 'list',
@@ -82,7 +95,11 @@ const gatherInfo = async () => {
     process.exit();
   } else {
     await inquirer.prompt(initQuestions).then(async (answers) => {
-      writeFileSync(CONIFER_CONFIG_FILE, JSON.stringify(answers));
+      const transformAns = {
+        ...answers,
+        testDirectory: path.join(CWD, answers.testDirectory),
+      };
+      writeFileSync(CONIFER_CONFIG_FILE, JSON.stringify(transformAns));
     });
   }
 };
