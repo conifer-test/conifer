@@ -4,7 +4,29 @@ const { ddbClient } = require('./ddb-client.js');
 const fs = require('fs');
 
 // TODO: figure out here putItem needs to be called and remove hard-coded values
-const putItem = async () => {
+const putNewTestFileInDynamo  = async (testFileName, testRunID) => {
+  try {
+    const jsonData = {
+      testFileName: testFileName, // primary key
+      testRunID: testRunID, // sort key
+      status: 'To be executed',
+    };
+
+    const params = {
+      TableName: 'Conifer_Test_Runs',
+      Key: { testFileName: testFileName },
+      Item: marshall(jsonData)
+    };
+
+    const data = await ddbClient.send(new PutItemCommand(params));
+    console.log('New Test File Added', data);
+    return data;
+  } catch (err) {
+    console.log('Error', err);
+  }
+};
+
+const updateExisitingTestFileInDynamo  = async (testFileName, testRunID) => {
   try {
     // rawData should be the freshly uploaded json file that is being watched by file watcher
     const rawData = fs.readFileSync('./mochawesome.json', 'utf-8'); 
@@ -25,11 +47,11 @@ const putItem = async () => {
     };
 
     const data = await ddbClient.send(new PutItemCommand(params));
-    console.log('Item Putted', data);
+    console.log('Item Updated', data);
     return data;
   } catch (err) {
     console.log('Error', err);
   }
 };
 
-module.exports = { putItem };
+module.exports = { putNewTestFileInDynamo, updateExisitingTestFileInDynamo };
