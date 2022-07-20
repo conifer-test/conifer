@@ -2,9 +2,15 @@ const { groupTests, findAllTests } = require('./coniferGlob');
 const fs = require('fs');
 const ora = require('ora');
 const spinner = ora();
-const log = require('./logger').logger;
+const Promisify = require('./promisify');
+const {
+  ECRClient,
+  DescribeRepositoriesCommand,
+  CreateRepositoryCommand,
+} = require('@aws-sdk/client-ecr');
 
 const { CONIFER_CONFIG_FILE } = require('./coniferConfig');
+const { createDockerfile } = require('./coniferDockerfile');
 
 const fileGlob = async () => {
   spinner.start('Finding tests files to glob');
@@ -16,7 +22,7 @@ const fileGlob = async () => {
     if (Number(json.parallelInstances) !== parallelInstances) {
       json['parallelInstances'] = parallelInstances;
     }
-    log(
+    spinner.warn(
       `Reduced number of parallel instances to ${parallelInstances} due to amount of test files`
     );
     json['testGroupings'] = globbedFiles;
@@ -30,11 +36,53 @@ const timingData = async () => {
 };
 
 const buildImage = async () => {
-  // TODO: Build image
+  await createDockerfile();
+  spinner.start('Building docker image...');
+  // await Promisify.execute(
+  //   'docker build -t conifer-test:latest . --platform linux/amd64'
+  // );
+  await Promisify.spawner('docker', [
+    'build',
+    '-t',
+    'conifer-test:latest',
+    '.',
+    '--platform',
+    'linux/amd64',
+  ]);
+  spinner.succeed('Docker image built');
 };
 
 const pushToEcr = async () => {
-  // TODO: push new image to ECR
+  const region = 'us-west-1';
+  const client = new ECRClient({ region }); // TODO: Fix region
+  let repo;
+
+  const describeRegistry = new DescribeRepositoriesCommand({
+    repositoryNames: ['conifer-test'],
+  });
+
+  spinner.start('Creating AWS private repository...');
+  try {
+    repo = await client.send(describeRegistry);
+    repo = repo.repositories.find((r) => r.repositoryName === 'conifer-test');
+  } catch (error) {
+    const createRegistry = new CreateRepositoryCommand({
+      repositoryName: 'conifer-test',
+    });
+    repo = await client.send(createRegistry);
+    repo = repo.repository;
+  }
+  spinner.succeed('Repository created');
+
+  await Promisify.execute(
+    `aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${repo.repositoryUri}`
+  );
+  spinner.start('Pushing image to your private AWS ECR...\n');
+  const image = `${repo.repositoryUri}:latest`;
+  await Promisify.execute(`docker tag conifer-test:latest ${image}`);
+  // await Promisify.execute(`docker push ${image}`);
+  await Promisify.spawner('docker', ['push', image]);
+  spinner.succeed('Image pushed to ECR');
 };
 
 module.exports = { fileGlob, timingData, buildImage, pushToEcr };

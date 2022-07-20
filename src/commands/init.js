@@ -4,6 +4,7 @@ const log = require('../utils/logger.js').logger;
 const confierAscii = require('../utils/confierAscii');
 const {
   cloneDeployRepo,
+  cloneFilesRepo,
   installCDK,
   createConiferLocalDirectory,
 } = require('../utils/coniferInit');
@@ -108,6 +109,7 @@ const newInit = async () => {
   await createConiferLocalDirectory();
   await getAwsCred();
   await gatherInfo();
+  await cloneFilesRepo();
   await cloneDeployRepo();
   await installCDK();
 };
