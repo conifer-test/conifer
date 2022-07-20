@@ -3,7 +3,6 @@ const { marshall } = require('@aws-sdk/util-dynamodb');
 const { ddbClient } = require('./ddb-client.js');
 const fs = require('fs');
 
-// TODO: figure out here putItem needs to be called and remove hard-coded values
 const putNewTestFileInDynamo  = async (testFileName, testRunID) => {
   try {
     const jsonData = {
@@ -26,6 +25,7 @@ const putNewTestFileInDynamo  = async (testFileName, testRunID) => {
   }
 };
 
+// TODO: figure out here putItem needs to be called and remove hard-coded values
 const updateExisitingTestFileInDynamo  = async (testFileName, testRunID) => {
   try {
     // rawData should be the freshly uploaded json file that is being watched by file watcher
