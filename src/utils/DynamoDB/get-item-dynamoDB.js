@@ -1,5 +1,5 @@
 const { GetCommand } = require('@aws-sdk/lib-dynamodb');
-const { ddbDocClient } = require('./ddbDocClient.js');
+const { ddbDocClient } = require('./ddb-doc-client.js');
 
 // Set the parameters.
 const params = {

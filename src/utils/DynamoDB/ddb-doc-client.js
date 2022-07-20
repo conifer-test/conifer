@@ -1,5 +1,5 @@
 const { DynamoDBDocumentClient } = require('@aws-sdk/lib-dynamodb');
-const { ddbClient } = require('./ddbClient.js');
+const { ddbClient } = require('./ddb-client.js');
 
 const marshallOptions = {
   // Whether to automatically convert empty strings, blobs, and sets to `null`.
