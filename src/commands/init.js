@@ -1,7 +1,7 @@
 const inquirer = require('inquirer');
 const { writeFileSync } = require('fs');
 const log = require('../utils/logger.js').logger;
-const confierAscii = require('../utils/confierAscii');
+const coniferAscii = require('../utils/coniferAscii');
 const {
   cloneDeployRepo,
   cloneFilesRepo,
@@ -45,7 +45,7 @@ const getAwsCred = async () => {
     }
     spinner.start();
     writeFileSync(CONIFER_ENVIRONMENT_PATH, envStr);
-    spinner.succeed('Credentials saved to confier environment\n');
+    spinner.succeed('Credentials saved to conifer environment\n');
   });
 };
 
@@ -123,6 +123,6 @@ const newInit = async () => {
 };
 
 module.exports = async () => {
-  await confierAscii();
+  await coniferAscii();
   await newInit();
 };
