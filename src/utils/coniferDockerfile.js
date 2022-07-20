@@ -17,7 +17,7 @@ RUN yarn add mochawesome
 
 WORKDIR /.conifer
 ADD start.sh /
-RUN chmod +x /start.sh
+RUN chmod +x /conifer-start.sh
 
 # Reset entrypoint
 ENTRYPOINT []
@@ -25,7 +25,7 @@ ENTRYPOINT []
 ARG arg
 ENV FILES_GLOB=$arg
 
-CMD ["/start.sh"]
+CMD ["/conifer-start.sh"]
 `;
 
 const createDockerfile = async () => {
