@@ -14,9 +14,14 @@ const deployAWSInfrastructure = async () => {
   spinner.start(
     'Deploying AWS infrastructure with CDK. This could take 15 minutes or more...\n'
   );
-  await Promisify.execute(
-    `cdk deploy '*' --outputs-file ${CDK_OUTPUTS_PATH} --require-approval never`
-  );
+  await Promisify.spawner('cdk', [
+    'deploy',
+    '*',
+    '--outputs-file',
+    CDK_OUTPUTS_PATH,
+    '--require-approval',
+    'never',
+  ]);
   spinner.succeed('AWS infrastructure successfully deployed');
 };
 
