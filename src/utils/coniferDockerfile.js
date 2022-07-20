@@ -16,7 +16,7 @@ RUN yarn add @aws-sdk/client-s3
 RUN yarn add mochawesome
 
 WORKDIR /.conifer
-ADD start.sh /
+ADD conifer-start.sh /
 RUN chmod +x /conifer-start.sh
 
 # Reset entrypoint
