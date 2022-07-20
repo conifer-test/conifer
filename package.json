@@ -1,6 +1,6 @@
 {
   "name": "conifer-test",
-  "version": "1.0.9",
+  "version": "1.0.8",
   "description": "",
   "bin": {
     "conifer": "./bin/conifer-cli.js",
