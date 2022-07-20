@@ -3,4 +3,3 @@ node_modules
 coniferJSONReports
 mochawesome-report
 .prettierrc
-package-lock.json
