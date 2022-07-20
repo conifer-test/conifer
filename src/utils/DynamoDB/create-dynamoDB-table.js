@@ -1,7 +1,5 @@
-const { CreateTableCommand, DynamoDBClient } = require('@aws-sdk/client-dynamodb');
-
-const REGION = 'ap-northeast-1';
-const ddbClient = new DynamoDBClient({ region: REGION });
+const { CreateTableCommand } = require('@aws-sdk/client-dynamodb');
+const { ddbClient } = require('./ddb-client.js');
 
 const tableParams = {
   AttributeDefinitions: [
@@ -34,14 +32,15 @@ const tableParams = {
   },
 };
 
+// Creates a table using the above params if it doesn' exist yet
 const makeTable = async () => {
   try {
     const data = await ddbClient.send(new CreateTableCommand(tableParams));
-    console.log('Conifer table created', data);
+    // console.log('Conifer table created', data);
     return data;
   } catch (err) {
     console.log('Error', err);
   }
 };
 
-makeTable();
+module.exports = { makeTable };
