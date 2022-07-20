@@ -20,19 +20,34 @@ const fileGlob = async () => {
   fs.readFile(CONIFER_CONFIG_FILE, (err, data) => {
     const json = JSON.parse(data);
     if (Number(json.parallelInstances) !== parallelInstances) {
+      spinner.warn(
+        `Reduced number of parallel instances to ${parallelInstances} due to amount of test files`
+      );
       json['parallelInstances'] = parallelInstances;
     }
-    spinner.warn(
-      `Reduced number of parallel instances to ${parallelInstances} due to amount of test files`
-    );
     json['testGroupings'] = globbedFiles;
     fs.writeFileSync(CONIFER_CONFIG_FILE, JSON.stringify(json));
   });
   spinner.succeed('Completed globbing files');
 };
 
-const timingData = async () => {
-  // TODO: timing data algorithm
+// TODO: Test following code
+const minElem = (lst) => {
+  return lst.indexOf(Math.min(...lst));
+};
+
+const timingData = async (filesObj, parallelInstances) => {
+  const fileAllocations = new Array(parallelInstances).fill().map(Object);
+  const totals = new Array(parallelInstances).fill(0);
+
+  const filesList = Object.entries(filesObj).sort((a, b) => b[1] - a[1]);
+  for (const file of filesList) {
+    const currMinIndex = minElem(totals);
+    fileAllocations[currMinIndex][file[0]] = file[1];
+    totals[currMinIndex] += file[1];
+  }
+
+  return fileAllocations;
 };
 
 const buildImage = async () => {
@@ -85,4 +100,9 @@ const pushToEcr = async () => {
   spinner.succeed('Image pushed to ECR');
 };
 
-module.exports = { fileGlob, timingData, buildImage, pushToEcr };
+module.exports = {
+  fileGlob,
+  timingData,
+  buildImage,
+  pushToEcr,
+};

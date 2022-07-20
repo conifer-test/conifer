@@ -4,7 +4,11 @@ const fs = require('fs');
 
 const spinner = ora();
 const DEPLOY_REPO = 'https://github.com/conifer-test/deploy.git';
-const { CONIFER_LOCAL_DIRECTORY } = require('./coniferConfig');
+const {
+  CONIFER_LOCAL_DIRECTORY,
+  CWD,
+  parseConfig,
+} = require('./coniferConfig');
 const DEPLOY_DIRECTORY = `${CONIFER_LOCAL_DIRECTORY}/deploy`;
 const CLONE_FILES_REPO =
   'https://github.com/conifer-test/file-watch-upload.git';
@@ -44,9 +48,29 @@ const createConiferLocalDirectory = async () => {
   }
 };
 
+const createStartShell = async () => {
+  const { ports, entryPoint } = await parseConfig();
+  let portsStr;
+  portsStr = ports.map((port) => `npx wait-on http://localhost:${port}`);
+  portsStr = portsStr.join(' && ');
+
+  const content = `
+#!/bin/bash
+node .conifer/s3-test-result-uploader.js & ${entryPoint} & ${portsStr} && \
+npx cypress run --reporter mochawesome --reporter-options \
+"reportDir=cypress/results,overwrite=false,html=false,json=true" \
+--config 'specPattern=$FILES_GLOB'`;
+
+  spinner.start('Creating conifer-start.sh');
+  process.chdir(CWD);
+  fs.writeFileSync('./conifer-start.sh', content);
+  spinner.succeed('conifer-start.sh created in project directory');
+};
+
 module.exports = {
   cloneDeployRepo,
   cloneFilesRepo,
   installCDK,
   createConiferLocalDirectory,
+  createStartShell,
 };

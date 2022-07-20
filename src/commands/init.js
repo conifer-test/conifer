@@ -7,6 +7,7 @@ const {
   cloneFilesRepo,
   installCDK,
   createConiferLocalDirectory,
+  createStartShell,
 } = require('../utils/coniferInit');
 const ora = require('ora');
 const path = require('path');
@@ -62,6 +63,11 @@ const initQuestions = [
   },
   {
     type: 'input',
+    name: 'ports',
+    message: 'What port(s) are exposed: (e.g., `3000, 3001`)',
+  },
+  {
+    type: 'input',
     name: 'parallelInstances',
     message: 'How many parallel instances do you want to provision:',
   },
@@ -99,6 +105,7 @@ const gatherInfo = async () => {
       const transformAns = {
         ...answers,
         testDirectory: path.join(CWD, answers.testDirectory),
+        ports: answers.ports.split(/[, ]+/),
       };
       writeFileSync(CONIFER_CONFIG_FILE, JSON.stringify(transformAns));
     });
@@ -109,6 +116,7 @@ const newInit = async () => {
   await createConiferLocalDirectory();
   await getAwsCred();
   await gatherInfo();
+  await createStartShell();
   await cloneFilesRepo();
   await cloneDeployRepo();
   await installCDK();
