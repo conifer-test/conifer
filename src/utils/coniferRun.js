@@ -5,7 +5,7 @@ const fs = require('fs');
 const { CONIFER_LOCAL_DIRECTORY } = require('./coniferConfig');
 const CDK_OUTPUTS_PATH = `${CONIFER_LOCAL_DIRECTORY}/cdk_outputs.json`;
 
-const { ECSClient, RunTaskCommand } = require("@aws-sdk/client-ecs");
+const { ECSClient, DescribeTasksCommand, RunTaskCommand } = require("@aws-sdk/client-ecs");
 
 // Trigger running of the tasks
 /*
@@ -38,13 +38,37 @@ High level flow of runTestsInParallel command
 
 */
 
-const cdkOutputs = JSON.parse(fs.readFileSync(CDK_OUTPUTS_PATH));
+const runAllTasks = async (taskCommands, client) => {
+  const runningTasks = taskCommands.map(taskCommand => {
+    return client.send(taskCommand).then(result => result);
+  });
 
-const client = new ECSClient({ region: "us-west-1" });
-const cluster = cdkOutputs.ConiferCdkStack.clusterArn;
-const taskArns = JSON.parse(cdkOutputs.ConiferCdkStack.taskDefinitionArns);
+  return await Promise
+    .all(runningTasks)
+    .then(results => {
+      console.log('all tasks launched');
+      return results.map(result => result.tasks[0].taskArn);
+    });
+}
 
 const runTestsInParallel = async () => {
+  const cdkOutputs = JSON.parse(fs.readFileSync(CDK_OUTPUTS_PATH));
+
+  const client = new ECSClient({ region: "us-west-1" }); // dynamically populate the region
+  const cluster = cdkOutputs.ConiferCdkStack.clusterArn;
+  const taskArns = JSON.parse(cdkOutputs.ConiferCdkStack.taskDefinitionArns);
+  const taskCommands = taskArns.map(taskArn => {
+    const taskParams = {
+      taskDefinition: taskArn,
+      cluster,
+    };
+  
+    return new RunTaskCommand(taskParams, client);
+  });
+
+  const taskRunArns = await runAllTasks(taskCommands, client);
+  // console.log(taskRunArns)
+  // console.log('Success!!!')
 
 }
 
