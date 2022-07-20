@@ -15,6 +15,9 @@
     "eslint": "^8.19.0"
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.131.0",
+    "@aws-sdk/lib-dynamodb": "^3.131.0",
+    "@aws-sdk/util-dynamodb": "^3.131.0",
     "@aws-sdk/client-ecr": "^3.131.0",
     "aws-sdk": "^2.1175.0",
     "chalk": "^4.1.2",
@@ -31,6 +34,7 @@
     "nanospinner": "^1.1.0",
     "ora": "^5.4.1",
     "tinycolor": "^0.0.1",
-    "tinycolor2": "^1.4.2"
+    "tinycolor2": "^1.4.2",
+    "uuid": "^8.3.2"
   }
 }
