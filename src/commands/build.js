@@ -5,7 +5,6 @@ const {
   pushToEcr,
 } = require('../utils/coniferBuild');
 const fs = require('fs');
-
 const { CONIFER_CONFIG_FILE } = require('../utils/coniferConfig');
 let config;
 
@@ -20,9 +19,6 @@ module.exports = async () => {
     // TODO: Timing data
     await timingData();
   }
-
-  // TODO: Build updated image
   await buildImage();
-  // TODO: Push updated image to ECR
   await pushToEcr();
 };

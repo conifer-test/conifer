@@ -1,6 +1,6 @@
 {
   "name": "conifer-test",
-  "version": "1.0.6",
+  "version": "1.0.8",
   "description": "",
   "bin": {
     "conifer": "./bin/conifer-cli.js",
@@ -15,6 +15,7 @@
     "eslint": "^8.19.0"
   },
   "dependencies": {
+    "@aws-sdk/client-ecr": "^3.131.0",
     "aws-sdk": "^2.1175.0",
     "chalk": "^4.1.2",
     "chalk-animation": "^2.0.2",
