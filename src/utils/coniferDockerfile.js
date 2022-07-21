@@ -14,7 +14,7 @@ FROM cypress/included:10.3.0
 
 INCLUDE+ Dockerfile
 
-RUN ${packageManager} add wait-on dotenv @aws-sdk/client-s3 mochawesome
+RUN ${packageManager} add wait-on dotenv @aws-sdk/client-s3 @aws-sdk/client-dynamodb @aws-sdk/util-dynamodb mochawesome
 
 ADD ./conifer-start.sh /
 RUN chmod +x /conifer-start.sh

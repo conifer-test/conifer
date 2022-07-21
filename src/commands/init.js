@@ -87,6 +87,8 @@ const initQuestions = [
       { name: 't3.2xlarge - 8 vCPU & 32 GiB', value: 't3.2xlarge' },
       { name: 'c6i.2xlarge - 8 vCPU & 16 GiB', value: 'c6i.2xlarge' },
       { name: 'c6i.4xlarge - 16 vCPU & 32 GiB', value: 'c6i.4xlarge' },
+      { name: 'c6i.8xlarge - 32 vCPU & 64 GiB', value: 'c6i.8xlarge' },
+      { name: 'c6i.12xlarge - 64 vCPU & 96 GiB', value: 'c6i.12xlarge' },
     ],
   },
   {
@@ -113,7 +115,7 @@ const gatherInfo = async () => {
         ...answers,
         testDirectory: path.join(CWD, answers.testDirectory),
         ports: answers.ports.split(/[, ]+/),
-        bucketName: `conifer-test-bucket-${v4()}`
+        bucketName: `conifer-test-bucket-${v4()}`,
       };
       writeFileSync(CONIFER_CONFIG_FILE, JSON.stringify(transformAns));
     });
