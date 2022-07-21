@@ -2,6 +2,7 @@ const inquirer = require('inquirer');
 const { writeFileSync } = require('fs');
 const log = require('../utils/logger.js').logger;
 const coniferAscii = require('../utils/coniferAscii');
+const { v4 } = require('uuid');
 const {
   cloneDeployRepo,
   cloneFilesRepo,
@@ -112,6 +113,7 @@ const gatherInfo = async () => {
         ...answers,
         testDirectory: path.join(CWD, answers.testDirectory),
         ports: answers.ports.split(/[, ]+/),
+        bucketName: `conifer-test-bucket-${v4()}`
       };
       writeFileSync(CONIFER_CONFIG_FILE, JSON.stringify(transformAns));
     });
