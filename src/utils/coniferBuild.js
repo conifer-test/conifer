@@ -61,6 +61,8 @@ const buildImage = async () => {
     '-t',
     'conifer-test:latest',
     '.',
+    '-f',
+    'Dockerfile.conifer',
     '--platform',
     'linux/amd64',
   ]);
@@ -94,6 +96,14 @@ const pushToEcr = async () => {
   );
   spinner.start('Pushing image to your private AWS ECR...\n');
   const image = `${repo.repositoryUri}:latest`;
+  // Send image to config file
+  fs.readFile(CONIFER_CONFIG_FILE, (err, data) => {
+    const json = JSON.parse(data);
+    json['imageUri'] = image;
+
+    fs.writeFileSync(CONIFER_CONFIG_FILE, JSON.stringify(json));
+  });
+
   await Promisify.execute(`docker tag conifer-test:latest ${image}`);
   // await Promisify.execute(`docker push ${image}`);
   await Promisify.spawner('docker', ['push', image]);
