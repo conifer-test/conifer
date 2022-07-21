@@ -56,7 +56,7 @@ const createStartShell = async () => {
 
   const content = `#!/bin/bash
 
-node .conifer/utils/s3-test-result-uploader.js & ${entryPoint} & ${portsStr} && \
+node .conifer/utils/observer.js & ${entryPoint} & ${portsStr} && \
 npx cypress run --reporter mochawesome --reporter-options \
 "reportDir=cypress/results,overwrite=false,reportFilename='[name]',html=false,json=true" \
 --config 'specPattern=$FILES_GLOB'`;
