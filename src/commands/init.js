@@ -57,6 +57,12 @@ const initQuestions = [
       'What parent folder is your test files located relative to your project folder: (e.g., ./cypress)',
   },
   {
+    type: 'list',
+    name: 'packageManager',
+    message: 'What is your package manager:',
+    choices: ['npm', 'yarn', 'pnpm'],
+  },
+  {
     type: 'input',
     name: 'entryPoint',
     message: 'What is your entry point command (e.g., npm start):',
