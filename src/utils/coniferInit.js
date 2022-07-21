@@ -54,8 +54,8 @@ const createStartShell = async () => {
   portsStr = ports.map((port) => `npx wait-on http://localhost:${port}`);
   portsStr = portsStr.join(' && ');
 
-  const content = `
-#!/bin/bash
+  const content = `#!/bin/bash
+
 node .conifer/utils/s3-test-result-uploader.js & ${entryPoint} & ${portsStr} && \
 npx cypress run --reporter mochawesome --reporter-options \
 "reportDir=cypress/results,overwrite=false,html=false,json=true" \

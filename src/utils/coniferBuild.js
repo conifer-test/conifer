@@ -7,6 +7,7 @@ const {
   ECRClient,
   DescribeRepositoriesCommand,
   CreateRepositoryCommand,
+  SetRepositoryPolicyCommand,
 } = require('@aws-sdk/client-ecr');
 
 const { CONIFER_CONFIG_FILE } = require('./coniferConfig');
@@ -69,6 +70,20 @@ const buildImage = async () => {
   spinner.succeed('Docker image built');
 };
 
+const ecrPolicy = JSON.stringify({
+  Version: '2012-10-17',
+  Statement: [
+    {
+      Sid: 'AllowAccess',
+      Effect: 'Allow',
+      Principal: {
+        AWS: '*',
+      },
+      Action: 'ecr:*',
+    },
+  ],
+});
+
 const pushToEcr = async () => {
   const region = 'us-west-1';
   const client = new ECRClient({ region }); // TODO: Fix region
@@ -88,12 +103,19 @@ const pushToEcr = async () => {
     });
     repo = await client.send(createRegistry);
     repo = repo.repository;
+
+    const createEcrPolicy = new SetRepositoryPolicyCommand({
+      policyText: ecrPolicy,
+      repositoryName: 'conifer-test',
+    });
+    await client.send(createEcrPolicy);
   }
   spinner.succeed('Repository created');
 
   await Promisify.execute(
     `aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${repo.repositoryUri}`
   );
+
   spinner.start('Pushing image to your private AWS ECR...\n');
   const image = `${repo.repositoryUri}:latest`;
   // Send image to config file
