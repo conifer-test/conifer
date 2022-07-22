@@ -53,7 +53,7 @@ const createTestRunId = () => {
     ],
   };
 };
-const testRunId = createTestRunId();
+const testRunId = JSON.stringify(createTestRunId());
 
 const addtestRunIdToConfig = () => {
   fs.readFile(CONIFER_CONFIG_FILE, (err, data) => {
@@ -76,6 +76,7 @@ const runAllTasks = async (taskCommands, client) => {
 
 const runTestsInParallel = async () => {
   const { awsRegion: region } = await parseConfig();
+  console.log("This is the line you're looking for", region);
   const cdkOutputs = JSON.parse(fs.readFileSync(CDK_OUTPUTS_PATH));
 
   const client = new ECSClient({ region }); // dynamically populate the region
