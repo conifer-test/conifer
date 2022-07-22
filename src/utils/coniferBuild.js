@@ -10,7 +10,7 @@ const {
   SetRepositoryPolicyCommand,
 } = require('@aws-sdk/client-ecr');
 
-const { CONIFER_CONFIG_FILE } = require('./coniferConfig');
+const { CONIFER_CONFIG_FILE, parseConfig } = require('./coniferConfig');
 const { createDockerfile } = require('./coniferDockerfile');
 
 const fileGlob = async () => {
@@ -85,8 +85,8 @@ const ecrPolicy = JSON.stringify({
 });
 
 const pushToEcr = async () => {
-  const region = 'us-west-1';
-  const client = new ECRClient({ region }); // TODO: Fix region
+  const { awsRegion: region } = await parseConfig();
+  const client = new ECRClient({ region });
   let repo;
 
   const describeRegistry = new DescribeRepositoriesCommand({

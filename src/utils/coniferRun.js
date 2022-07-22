@@ -3,7 +3,7 @@ const ora = require('ora');
 const fs = require('fs');
 const { v4 } = require('uuid');
 
-const { CONIFER_LOCAL_DIRECTORY } = require('./coniferConfig');
+const { CONIFER_LOCAL_DIRECTORY, parseConfig } = require('./coniferConfig');
 const CDK_OUTPUTS_PATH = `${CONIFER_LOCAL_DIRECTORY}/cdk_outputs.json`;
 
 const {
@@ -13,7 +13,6 @@ const {
 } = require('@aws-sdk/client-ecs');
 
 const spinner = ora();
-
 // Trigger running of the tasks
 /*
 Need the following:
@@ -64,9 +63,10 @@ const runAllTasks = async (taskCommands, client) => {
 };
 
 const runTestsInParallel = async () => {
+  const { awsRegion: region } = await parseConfig();
   const cdkOutputs = JSON.parse(fs.readFileSync(CDK_OUTPUTS_PATH));
 
-  const client = new ECSClient({ region: 'us-west-1' }); // dynamically populate the region
+  const client = new ECSClient({ region }); // dynamically populate the region
   const cluster = cdkOutputs.ConiferCdkStack.clusterArn;
   const taskArns = JSON.parse(cdkOutputs.ConiferCdkStack.taskDefinitionArns);
   const taskCommands = taskArns.map((taskArn) => {

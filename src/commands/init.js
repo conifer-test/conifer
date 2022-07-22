@@ -30,11 +30,6 @@ const awsQuestions = [
     name: 'AWS_SECRET',
     message: 'AWS Secret:',
   },
-  {
-    type: 'input',
-    name: 'AWS_REGION',
-    message: 'AWS Region:',
-  },
 ];
 
 const getAwsCred = async () => {
@@ -51,6 +46,11 @@ const getAwsCred = async () => {
 };
 
 const initQuestions = [
+  {
+    type: 'input',
+    name: 'awsRegion',
+    message: 'What is your AWS Region: (e.g., us-west-1)',
+  },
   {
     type: 'input',
     name: 'testDirectory',
