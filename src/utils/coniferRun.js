@@ -3,7 +3,11 @@ const ora = require('ora');
 const fs = require('fs');
 const { v4 } = require('uuid');
 
-const { CONIFER_LOCAL_DIRECTORY, parseConfig } = require('./coniferConfig');
+const {
+  CONIFER_LOCAL_DIRECTORY,
+  parseConfig,
+  CONIFER_CONFIG_FILE,
+} = require('./coniferConfig');
 const CDK_OUTPUTS_PATH = `${CONIFER_LOCAL_DIRECTORY}/cdk_outputs.json`;
 
 const {
@@ -51,6 +55,14 @@ const createTestRunId = () => {
 };
 const testRunId = createTestRunId();
 
+const addtestRunIdToConfig = () => {
+  fs.readFile(CONIFER_CONFIG_FILE, (err, data) => {
+    const json = JSON.parse(data);
+    json['testRunId'] = testRunId;
+    fs.writeFileSync(CONIFER_CONFIG_FILE, JSON.stringify(json));
+  });
+};
+
 const runAllTasks = async (taskCommands, client) => {
   const runningTasks = taskCommands.map((taskCommand) => {
     return client.send(taskCommand).then((result) => result);
@@ -84,4 +96,4 @@ const runTestsInParallel = async () => {
   // console.log('Success!!!')
 };
 
-module.exports = { runTestsInParallel };
+module.exports = { runTestsInParallel, addtestRunIdToConfig };

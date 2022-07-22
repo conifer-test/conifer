@@ -1,5 +1,8 @@
 const { exec } = require('child_process');
-const { runTestsInParallel } = require('../utils/coniferRun');
+const {
+  runTestsInParallel,
+  addtestRunIdToConfig,
+} = require('../utils/coniferRun');
 const log = require('../utils/logger.js').logger;
 
 module.exports = async () => {
@@ -10,5 +13,6 @@ module.exports = async () => {
   });
 
   await runTestsInParallel();
-  log('All tasks initiated')
+  await addtestRunIdToConfig();
+  log('All tasks initiated');
 };
