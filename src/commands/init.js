@@ -88,7 +88,7 @@ const initQuestions = [
       { name: 'c6i.2xlarge - 8 vCPU & 16 GiB', value: 'c6i.2xlarge' },
       { name: 'c6i.4xlarge - 16 vCPU & 32 GiB', value: 'c6i.4xlarge' },
       { name: 'c6i.8xlarge - 32 vCPU & 64 GiB', value: 'c6i.8xlarge' },
-      { name: 'c6i.12xlarge - 64 vCPU & 96 GiB', value: 'c6i.12xlarge' },
+      { name: 'c6i.12xlarge - 48 vCPU & 96 GiB', value: 'c6i.12xlarge' },
     ],
   },
   {
