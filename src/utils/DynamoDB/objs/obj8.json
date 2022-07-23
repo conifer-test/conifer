@@ -1,0 +1,108 @@
+{
+  "testFileName": "./cypress/e2e/fourth-test.cy.js",
+  "testRunID": "B",
+  "meta": {
+   "marge": {
+    "options": {
+     "html": false,
+     "json": true,
+     "overwrite": true,
+     "reportDir": "cypress/newResults",
+     "reportFilename": "[name]"
+    },
+    "version": "6.2.0"
+   },
+   "mocha": {
+    "version": "7.0.1"
+   },
+   "mochawesome": {
+    "options": {
+     "code": true,
+     "consoleReporter": "spec",
+     "quiet": false,
+     "reportFilename": "[name]",
+     "saveHtml": false,
+     "saveJson": true,
+     "useInlineDiffs": false
+    },
+    "version": "7.1.3"
+   }
+  },
+  "results": [
+   {
+    "afterHooks": [],
+    "beforeHooks": [],
+    "duration": 0,
+    "failures": [],
+    "file": "cypress/e2e/first-test.cy.js",
+    "fullFile": "cypress/e2e/first-test.cy.js",
+    "passes": [],
+    "pending": [],
+    "root": true,
+    "rootEmpty": true,
+    "skipped": [],
+    "suites": [
+     {
+      "afterHooks": [],
+      "beforeHooks": [],
+      "duration": 644,
+      "failures": [],
+      "file": "",
+      "fullFile": "",
+      "passes": [
+       "ced64afc-1902-4de9-9f5c-23d6df3c7396"
+      ],
+      "pending": [],
+      "root": false,
+      "rootEmpty": false,
+      "skipped": [],
+      "suites": [],
+      "tests": [
+       {
+        "code": "cy.get('#button123').contains('HI!!!!');",
+        "context": null,
+        "duration": 644,
+        "err": {},
+        "fail": false,
+        "fullTitle": "BUTTON CONTAINS HI looks inside the head content using `cy.document()`",
+        "isHook": false,
+        "parentUUID": "6693a89d-58be-4f9a-9471-2c252f22e9fa",
+        "pass": true,
+        "pending": false,
+        "skipped": false,
+        "speed": "fast",
+        "state": "passed",
+        "timedOut": null,
+        "title": "looks inside the head content using `cy.document()`",
+        "uuid": "ced64afc-1902-4de9-9f5c-23d6df3c7396"
+       }
+      ],
+      "title": "BUTTON CONTAINS HI",
+      "uuid": "6693a89d-58be-4f9a-9471-2c252f22e9fa",
+      "_timeout": 2000
+     }
+    ],
+    "tests": [],
+    "title": "",
+    "uuid": "d2adbcad-97de-46f8-972d-5386a613b446",
+    "_timeout": 2000
+   }
+  ],
+  "stats": {
+   "duration": 5,
+   "end": "2022-07-20T03:43:36.291Z",
+   "failures": 0,
+   "hasOther": false,
+   "hasSkipped": false,
+   "other": 0,
+   "passes": 1,
+   "passPercent": 100,
+   "pending": 0,
+   "pendingPercent": 0,
+   "skipped": 0,
+   "start": "2022-07-20T03:43:35.505Z",
+   "suites": 1,
+   "tests": 1,
+   "testsRegistered": 1
+  }
+ }
