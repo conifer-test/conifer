@@ -12,6 +12,7 @@ const {
 const DEPLOY_DIRECTORY = `${CONIFER_LOCAL_DIRECTORY}/deploy`;
 const CLONE_FILES_REPO =
   'https://github.com/conifer-test/file-watch-upload.git';
+const CLONE_DASHBOARD_REPO = 'https://github.com/conifer-test/conifer-dashboard.git';
 
 const cloneDeployRepo = async () => {
   process.chdir(CONIFER_LOCAL_DIRECTORY);
@@ -25,6 +26,12 @@ const cloneFilesRepo = async () => {
   spinner.start('Cloning files');
   await Promisify.execute(`git clone -q ${CLONE_FILES_REPO} .conifer/utils`);
   spinner.succeed('Files successfully cloned\n');
+};
+
+const cloneDashboardRepo = async () => {
+  spinner.start('Cloning dashboard...');
+  await Promisify.execute(`git clone -q ${CLONE_DASHBOARD_REPO} .conifer/dashboard`);
+  spinner.succeed('Dashboard successfully cloned\n');
 };
 
 const installCDK = async () => {
@@ -70,6 +77,7 @@ npx cypress run --reporter mochawesome --reporter-options \
 module.exports = {
   cloneDeployRepo,
   cloneFilesRepo,
+  cloneDashboardRepo,
   installCDK,
   createConiferLocalDirectory,
   createStartShell,
