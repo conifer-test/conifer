@@ -10,10 +10,21 @@ module.exports = async () => {
       message:
         'Please confirm you want to teardown the Conifer infrastructure.',
     },
+    {
+      type: 'confirm',
+      name: 'confirmECR',
+      message:
+        'Do you also want to teardown ECR? You will need to reupload your image',
+    },
   ];
-  await inquirer.prompt(question).then(async ({ confirmation }) => {
+
+  await inquirer.prompt(question).then(async ({ confirmation, confirmECR }) => {
     if (confirmation) {
-      teardown();
+      if (confirmECR) {
+        teardown(true);
+      } else {
+        teardown(false);
+      }
     } else {
       log('Teardown aborted');
     }
