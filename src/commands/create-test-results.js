@@ -6,13 +6,13 @@ const createTestRunResults = require('../utils/create-test-run-result-script');
 
 const generateTestResults = () => {
   console.log('Wait and receive info that test is completed');
+  console.log(`${chalk.cyan('Generating your parallel test results now...')}`);
 
   downloadTestRunS3();
   deleteTestRunS3();
   createTestRunResults();
 };
 
-module.exports = async () => {
-  console.log(`${chalk.cyan('Generating your parallel test results now...')}`);
-  generateTestResults();
+module.exports = {
+  generateTestResults
 };
