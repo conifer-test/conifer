@@ -7,6 +7,7 @@ const {
   cloneDeployRepo,
   cloneFilesRepo,
   installCDK,
+  installDashboardRepo,
   createConiferLocalDirectory,
   createStartShell,
   cloneDashboardRepo,
@@ -131,6 +132,7 @@ const newInit = async () => {
   await cloneFilesRepo();
   await cloneDeployRepo();
   await cloneDashboardRepo();
+  await installDashboardRepo();
   await installCDK();
 };
 

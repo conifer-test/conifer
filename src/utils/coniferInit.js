@@ -10,6 +10,7 @@ const {
   parseConfig,
 } = require('./coniferConfig');
 const DEPLOY_DIRECTORY = `${CONIFER_LOCAL_DIRECTORY}/deploy`;
+const DASHBOARD_DIRECTORY = `${CONIFER_LOCAL_DIRECTORY}/dashboard`;
 const CLONE_FILES_REPO =
   'https://github.com/conifer-test/file-watch-upload.git';
 const CLONE_DASHBOARD_REPO = 'https://github.com/conifer-test/conifer-dashboard.git';
@@ -30,9 +31,18 @@ const cloneFilesRepo = async () => {
 
 const cloneDashboardRepo = async () => {
   spinner.start('Cloning dashboard...');
-  await Promisify.execute(`git clone -q ${CLONE_DASHBOARD_REPO} .conifer/dashboard`);
+  await Promisify.execute(`git clone -q ${CLONE_DASHBOARD_REPO} dashboard`);
   spinner.succeed('Dashboard successfully cloned\n');
 };
+
+const installDashboardRepo = async () => {
+  spinner.start('Installing dashboard packages...');
+  process.chdir(`${DASHBOARD_DIRECTORY}/server`);
+  await Promisify.execute('npm install');
+  process.chdir(`${DASHBOARD_DIRECTORY}/client`);
+  await Promisify.execute('npm install');
+  spinner.succeed('Packages successfully installed!');
+}
 
 const installCDK = async () => {
   process.chdir(DEPLOY_DIRECTORY);
@@ -78,6 +88,7 @@ module.exports = {
   cloneDeployRepo,
   cloneFilesRepo,
   cloneDashboardRepo,
+  installDashboardRepo,
   installCDK,
   createConiferLocalDirectory,
   createStartShell,
