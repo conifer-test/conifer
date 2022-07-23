@@ -9,6 +9,7 @@ const {
   installCDK,
   createConiferLocalDirectory,
   createStartShell,
+  cloneDashboardRepo,
 } = require('../utils/coniferInit');
 const ora = require('ora');
 const path = require('path');
@@ -129,6 +130,7 @@ const newInit = async () => {
   await createStartShell();
   await cloneFilesRepo();
   await cloneDeployRepo();
+  await cloneDashboardRepo();
   await installCDK();
 };
 
