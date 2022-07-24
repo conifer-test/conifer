@@ -13,7 +13,8 @@ const DEPLOY_DIRECTORY = `${CONIFER_LOCAL_DIRECTORY}/deploy`;
 const DASHBOARD_DIRECTORY = `${CONIFER_LOCAL_DIRECTORY}/dashboard`;
 const CLONE_FILES_REPO =
   'https://github.com/conifer-test/file-watch-upload.git';
-const CLONE_DASHBOARD_REPO = 'https://github.com/conifer-test/conifer-dashboard.git';
+const CLONE_DASHBOARD_REPO =
+  'https://github.com/conifer-test/conifer-dashboard.git';
 
 const cloneDeployRepo = async () => {
   process.chdir(CONIFER_LOCAL_DIRECTORY);
@@ -42,7 +43,7 @@ const installDashboardRepo = async () => {
   process.chdir(`${DASHBOARD_DIRECTORY}/client`);
   await Promisify.execute('npm install');
   spinner.succeed('Packages successfully installed!');
-}
+};
 
 const installCDK = async () => {
   process.chdir(DEPLOY_DIRECTORY);

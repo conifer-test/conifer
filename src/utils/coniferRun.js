@@ -3,7 +3,6 @@ const ora = require('ora');
 const fs = require('fs');
 const { v4 } = require('uuid');
 
-
 const {
   CONIFER_LOCAL_DIRECTORY,
   parseConfig,
@@ -107,19 +106,19 @@ const runTestsInParallel = async () => {
             environment: [
               {
                 name: 'TEST_RUN_ID',
-                value: testRunId 
-              }
-            ] 
-          }
-        ]
-      }
+                value: testRunId,
+              },
+            ],
+          },
+        ],
+      },
     };
 
     return new RunTaskCommand(taskParams, client);
   });
 
   const taskRunArns = await runAllTasks(taskCommands, client);
-  console.log(taskRunArns)
+  console.log(taskRunArns);
   return taskRunArns;
 };
 
@@ -132,16 +131,16 @@ const areTasksRunning = async (taskArns) => {
 
   const params = {
     cluster,
-    tasks: taskArns
-  }
+    tasks: taskArns,
+  };
 
   const command = new DescribeTasksCommand(params);
   const response = await client.send(command);
 
-  return response.tasks.every(task => {
+  return response.tasks.every((task) => {
     return task.lastStatus === 'STOPPED';
-  })
-}
+  });
+};
 
 const waitForTasksToComplete = async (taskArns, ...args) => {
   spinner.start('Waiting for tests to finish executing...');
@@ -150,11 +149,15 @@ const waitForTasksToComplete = async (taskArns, ...args) => {
 
     if (tasksComplete) {
       clearInterval(intervalId);
-      args.forEach(arg => arg());
+      args.forEach((arg) => arg());
       spinner.succeed('All tests have finished executing!');
-
     }
   }, 5000);
-}
+};
 
-module.exports = { runTestsInParallel, addtestRunIdToConfig, areTasksRunning, waitForTasksToComplete };
+module.exports = {
+  runTestsInParallel,
+  addtestRunIdToConfig,
+  areTasksRunning,
+  waitForTasksToComplete,
+};

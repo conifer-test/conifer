@@ -2,11 +2,9 @@ const { exec } = require('child_process');
 const {
   runTestsInParallel,
   addtestRunIdToConfig,
-  waitForTasksToComplete
+  waitForTasksToComplete,
 } = require('../utils/coniferRun');
-const {
-  generateTestResults
-} = require('../commands/create-test-results');
+const { generateTestResults } = require('../commands/create-test-results');
 const log = require('../utils/logger.js').logger;
 
 module.exports = async () => {
