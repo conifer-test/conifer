@@ -14,8 +14,8 @@ module.exports = async () => {
     (async () => await open('http://localhost:7777'))(); // TODO: Port number we want?
   });
 
-  const taskArns = await runTestsInParallel();
   addtestRunIdToConfig();
-  log('All tasks initiated');
+  const taskArns = await runTestsInParallel();
+  log('All tasks initiated...');
   waitForTasksToComplete(taskArns, generateTestResults);
 };
