@@ -119,6 +119,14 @@ const runTestsInParallel = async () => {
 
   const taskRunArns = await runAllTasks(taskCommands, client);
   console.log(taskRunArns);
+
+  fs.readFile(CONIFER_CONFIG_FILE, (err, data) => {
+    const json = JSON.parse(data);
+    json['taskRunARNs'] = taskRunArns;
+
+    fs.writeFileSync(CONIFER_CONFIG_FILE, JSON.stringify(json));
+  });
+
   return taskRunArns;
 };
 
