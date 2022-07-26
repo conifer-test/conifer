@@ -3,6 +3,7 @@ const {
   runTestsInParallel,
   addtestRunIdToConfig,
   waitForTasksToComplete,
+  sendTestRunId,
 } = require('../utils/coniferRun');
 const { generateTestResults } = require('../commands/create-test-results');
 const log = require('../utils/logger.js').logger;
@@ -17,5 +18,6 @@ module.exports = async () => {
   addtestRunIdToConfig();
   const taskArns = await runTestsInParallel();
   log('All tasks initiated...');
+  sendTestRunId();
   waitForTasksToComplete(taskArns, generateTestResults);
 };
