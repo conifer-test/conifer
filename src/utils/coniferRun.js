@@ -184,9 +184,14 @@ const waitForTasksToComplete = async (taskArns, ...args) => {
   }, POLLING_INTERVAL);
 };
 
+const sendTestRunId = async () => {
+  sendWebhooks({ testRunId });
+};
+
 module.exports = {
   runTestsInParallel,
   addtestRunIdToConfig,
   areTasksStopped,
   waitForTasksToComplete,
+  sendTestRunId,
 };
