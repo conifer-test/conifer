@@ -1,8 +1,11 @@
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
-
+const { CONIFER_LOCAL_DIRECTORY } = require('../coniferConfig');
+const fs = require('fs');
 // Set the AWS Region.
-const REGION = 'ap-northeast-1';
+const { awsRegion: region } = fs.readFileSync(
+  `${CONIFER_LOCAL_DIRECTORY}/conifer-config.json`
+);
 // Create an Amazon DynamoDB service client object.
-const ddbClient = new DynamoDBClient({ region: REGION });
+const ddbClient = new DynamoDBClient({ region: region });
 
 module.exports = { ddbClient };

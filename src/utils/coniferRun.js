@@ -2,7 +2,8 @@ const Promisify = require('./promisify');
 const ora = require('ora');
 const fs = require('fs');
 const { v4 } = require('uuid');
-
+const determineEntriesToUpdate = require('./DynamoDB/determineEntriesToUpdate');
+const sendWebhooks = require('./DynamoDB/webHook');
 const {
   CONIFER_LOCAL_DIRECTORY,
   parseConfig,
@@ -17,6 +18,10 @@ const {
 } = require('@aws-sdk/client-ecs');
 
 const spinner = ora();
+
+const POLLING_INTERVAL = 5000;
+const EMPTY = 0;
+
 // Trigger running of the tasks
 /*
 Need the following:
@@ -128,7 +133,7 @@ const runTestsInParallel = async () => {
   return taskRunArns;
 };
 
-const areTasksRunning = async (taskArns) => {
+const areTasksStopped = async (taskArns) => {
   const { awsRegion: region } = await parseConfig();
   const cdkOutputs = JSON.parse(fs.readFileSync(CDK_OUTPUTS_PATH));
   const client = new ECSClient({ region });
@@ -148,22 +153,40 @@ const areTasksRunning = async (taskArns) => {
   });
 };
 
+const pollDynamoForNewData = (testRunID) => {
+  //helper function for pollDynamoDb
+  return setInterval(async () => {
+    const newItems = await determineEntriesToUpdate(testRunID);
+    // console.log('newItems: ', newItems);
+    if (newItems.length !== EMPTY) {
+      sendWebhooks(newItems);
+      // console.log('Initiating updates of dynamo!');
+    } else {
+      console.log('no new items to update');
+    }
+  }, POLLING_INTERVAL);
+};
+
 const waitForTasksToComplete = async (taskArns, ...args) => {
   spinner.start('Waiting for tests to finish executing...');
+  const { testRunId } = await parseConfig();
+  const pollDynamo = pollDynamoForNewData(testRunId);
+
   const intervalId = setInterval(async () => {
-    const tasksComplete = await areTasksRunning(taskArns);
+    const tasksComplete = await areTasksStopped(taskArns);
 
     if (tasksComplete) {
       clearInterval(intervalId);
+      clearInterval(pollDynamo);
       args.forEach((arg) => arg());
       spinner.succeed('All tests have finished executing!');
     }
-  }, 5000);
+  }, POLLING_INTERVAL);
 };
 
 module.exports = {
   runTestsInParallel,
   addtestRunIdToConfig,
-  areTasksRunning,
+  areTasksStopped,
   waitForTasksToComplete,
 };
