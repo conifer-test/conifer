@@ -1,21 +1,21 @@
+const fs = require('fs');
 const { QueryCommand } = require('@aws-sdk/client-dynamodb');
 const { unmarshall } = require('@aws-sdk/util-dynamodb');
 const { ddbDocClient } = require('./ddb-doc-client');
 const { CONIFER_LOCAL_DIRECTORY } = require('../coniferConfig');
-const fs = require('fs');
 
 const {
   ConiferCdkStack: { tableName },
 } = JSON.parse(fs.readFileSync(`${CONIFER_LOCAL_DIRECTORY}/cdk_outputs.json`));
 
-const getItemsByTestRunID = async (testRunID) => {
+const getItemsByTestRunID = async (testRunId) => {
   try {
     const params = {
       TableName: tableName,
       IndexName: 'testRun',
       KeyConditionExpression: 'testRunID = :tri',
       ExpressionAttributeValues: {
-        ':tri': { S: testRunID },
+        ':tri': { S: testRunId },
       },
     };
 

@@ -2,6 +2,7 @@ const Promisify = require('./promisify');
 const ora = require('ora');
 const fs = require('fs');
 const { v4 } = require('uuid');
+const path = require('path');
 const determineEntriesToUpdate = require('./DynamoDB/determineEntriesToUpdate');
 const sendWebhooks = require('./DynamoDB/webHook');
 const {
@@ -72,7 +73,6 @@ High level flow of runTestsInParallel command
 // const testRunId = createTestRunId();
 
 const testRunId = v4();
-
 const addtestRunIdToConfig = () => {
   fs.readFile(CONIFER_CONFIG_FILE, (err, data) => {
     const json = JSON.parse(data);
@@ -92,8 +92,18 @@ const runAllTasks = async (taskCommands, client) => {
   });
 };
 
+
+// <------------------ Extract later to own module
+const makeGlob = (files) => {
+  const fileNames = files.map((filePath) => {
+    return path.parse(path.parse(filePath).name).name;
+  });
+  const filesNamesString = fileNames.join(',');
+  return `cypress/**/{${filesNamesString}}.{cy,spec}.{js,jsx,ts,tsx}`;
+};
+
 const runTestsInParallel = async () => {
-  const { awsRegion: region } = await parseConfig();
+  const { awsRegion: region, testGroupings } = await parseConfig();
   const cdkOutputs = JSON.parse(fs.readFileSync(CDK_OUTPUTS_PATH));
 
   const client = new ECSClient({ region }); // dynamically populate the region
@@ -112,6 +122,10 @@ const runTestsInParallel = async () => {
                 name: 'TEST_RUN_ID',
                 value: testRunId,
               },
+              {
+                name: 'FILES_GLOB',
+                value: makeGlob(testGroupings[index]),
+              }
             ],
           },
         ],
