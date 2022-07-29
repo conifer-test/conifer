@@ -7,6 +7,7 @@ const {
 } = require('../utils/coniferRun');
 const { generateTestResults } = require('../commands/create-test-results');
 const log = require('../utils/logger.js').logger;
+const updateTestGroupings = require('../utils/updateTestGroupings');
 
 module.exports = async () => {
   const dashboard = exec('start_dashboard'); // start backend express and frontend react
@@ -19,5 +20,5 @@ module.exports = async () => {
   const taskArns = await runTestsInParallel();
   log('All tasks initiated...');
   sendTestRunId();
-  waitForTasksToComplete(taskArns, generateTestResults);
+  waitForTasksToComplete(taskArns, generateTestResults, updateTestGroupings);
 };
