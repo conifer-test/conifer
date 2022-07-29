@@ -4,11 +4,11 @@ const { unmarshall } = require('@aws-sdk/util-dynamodb');
 const { ddbDocClient } = require('./ddb-doc-client');
 const { CONIFER_LOCAL_DIRECTORY } = require('../coniferConfig');
 
-const {
-  ConiferCdkStack: { tableName },
-} = JSON.parse(fs.readFileSync(`${CONIFER_LOCAL_DIRECTORY}/cdk_outputs.json`));
 
 const getItemsByTestRunID = async (testRunId) => {
+  const {
+    ConiferCdkStack: { tableName },
+  } = JSON.parse(fs.readFileSync(`${CONIFER_LOCAL_DIRECTORY}/cdk_outputs.json`));
   try {
     const params = {
       TableName: tableName,
