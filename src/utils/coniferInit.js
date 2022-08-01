@@ -2,7 +2,9 @@ const ora = require('ora');
 const Promisify = require('./promisify');
 const fs = require('fs');
 
-const spinner = ora();
+const spinner = ora({
+  color: 'green',
+});
 const DEPLOY_REPO = 'https://github.com/conifer-test/deploy.git';
 const {
   CONIFER_LOCAL_DIRECTORY,
@@ -18,14 +20,13 @@ const CLONE_DASHBOARD_REPO =
 
 const cloneDeployRepo = async () => {
   process.chdir(CONIFER_LOCAL_DIRECTORY);
-  spinner.start(`Cloning ${DEPLOY_REPO}`);
+  spinner.start(`Cloning ${DEPLOY_REPO}...`);
   await Promisify.execute(`git clone -q '${DEPLOY_REPO}' ${DEPLOY_DIRECTORY}`);
-  // await Promisify.spawner('git', ['clone', DEPLOY_REPO, DEPLOY_DIRECTORY]);
   spinner.succeed(`${DEPLOY_REPO} successfully cloned`);
 };
 
 const cloneFilesRepo = async () => {
-  spinner.start('Cloning files');
+  spinner.start('Cloning files...');
   await Promisify.execute(`git clone -q ${CLONE_FILES_REPO} .conifer/utils`);
   spinner.succeed('Files successfully cloned\n');
 };
@@ -42,7 +43,7 @@ const installDashboardRepo = async () => {
   await Promisify.execute('npm install');
   process.chdir(`${DASHBOARD_DIRECTORY}/client`);
   await Promisify.execute('npm install');
-  spinner.succeed('Packages successfully installed!');
+  spinner.succeed('Packages successfully installed');
 };
 
 const installCDK = async () => {
@@ -79,7 +80,7 @@ npx cypress run --reporter mochawesome --reporter-options \
 'reportDir=cypress/results,overwrite=false,reportFilename="[name]",html=false,json=true' \
 --config 'specPattern=$FILES_GLOB'`;
 
-  spinner.start('Creating conifer-start.sh');
+  spinner.start('Creating conifer-start.sh...');
   process.chdir(CWD);
   fs.writeFileSync('./conifer-start.sh', content);
   spinner.succeed('conifer-start.sh created in project directory');

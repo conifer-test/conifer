@@ -15,7 +15,9 @@ const {
 const ora = require('ora');
 const path = require('path');
 const CWD = process.cwd();
-const spinner = ora();
+const spinner = ora({
+  color: 'green',
+});
 const {
   CONIFER_ENVIRONMENT_PATH,
   CONIFER_CONFIG_FILE,

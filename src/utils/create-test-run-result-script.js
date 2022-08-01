@@ -5,17 +5,16 @@ const generateFinalReport = () => {
   console.log('Generating Parallel Test Results...');
 
   const mergeOptions = {
-    files: [
-      './coniferJSONReports/*.json',
-    ],
-  }
+    files: ['./coniferJSONReports/*.json'],
+  };
 
   const reporterOptions = {
-    reportFilename: "parallel-final-report",
-  }
+    reportFilename: 'parallel-final-report',
+  };
 
-  return merge(mergeOptions).then(report => marge.create(report, reporterOptions));
-}
-
+  return merge(mergeOptions).then((report) =>
+    marge.create(report, reporterOptions)
+  );
+};
 
 module.exports = generateFinalReport;

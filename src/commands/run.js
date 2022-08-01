@@ -1,24 +1,19 @@
-const { exec } = require('child_process');
 const {
   runTestsInParallel,
   addtestRunIdToConfig,
   waitForTasksToComplete,
   sendTestRunId,
 } = require('../utils/coniferRun');
+const { startDashboard } = require('../utils/coniferDashboard');
 const { generateTestResults } = require('../commands/create-test-results');
 const log = require('../utils/logger.js').logger;
 const updateTestGroupings = require('../utils/updateTestGroupings');
 
 module.exports = async () => {
-  const dashboard = exec('start_dashboard'); // start backend express and frontend react
-  dashboard.stdout.on('data', (data) => {
-    console.log(`${data}`);
-    (async () => await open('http://localhost:7777'))(); // TODO: Port number we want?
-  });
-
+  // startDashboard(); // start backend express and frontend react TODO: Fix this
   addtestRunIdToConfig();
+  sendTestRunId();
   const taskArns = await runTestsInParallel();
   log('All tasks initiated...');
-  sendTestRunId();
   waitForTasksToComplete(taskArns, generateTestResults, updateTestGroupings);
 };

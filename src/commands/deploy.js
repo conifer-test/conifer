@@ -13,9 +13,6 @@ module.exports = async () => {
 
   await inquirer.prompt(question).then(async ({ confirmation }) => {
     if (confirmation) {
-      log('Building image from ${directory}...');
-      // TODO: Build image with dockerfile
-      log('Building image complete');
       log('Deploying Conifer to AWS...');
       await deployAWSInfrastructure();
       log('Conifer deployed');

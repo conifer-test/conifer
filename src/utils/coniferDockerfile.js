@@ -28,7 +28,7 @@ ENV FILES_GLOB=$arg
 CMD ["/conifer-start.sh"]
 `;
 
-  spinner.start('Creating Dockerfile');
+  spinner.start('Creating Dockerfile...');
 
   process.chdir(CWD);
   fs.writeFileSync('./Dockerfile.conifer', content);

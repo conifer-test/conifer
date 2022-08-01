@@ -1,7 +1,9 @@
 const { groupTests, findAllTests } = require('./coniferGlob');
 const fs = require('fs');
 const ora = require('ora');
-const spinner = ora();
+const spinner = ora({
+  color: 'green',
+});
 const Promisify = require('./promisify');
 const {
   ECRClient,
@@ -32,7 +34,6 @@ const fileGlob = async () => {
   spinner.succeed('Completed globbing files');
 };
 
-// TODO: Test following code
 const minElem = (lst) => {
   return lst.indexOf(Math.min(...lst));
 };
@@ -63,21 +64,21 @@ const allocateTestsFromObjects = (objects, parallelInstances) => {
 
 const buildImage = async () => {
   await createDockerfile();
-  spinner.start('Building docker image...');
-  // await Promisify.execute(
-  //   'docker build -t conifer-test:latest . --platform linux/amd64'
-  // );
-  await Promisify.spawner('docker', [
-    'build',
-    '-t',
-    'conifer-test:latest',
-    '.',
-    '-f',
-    'Dockerfile.conifer',
-    '--platform',
-    'linux/amd64',
-  ]);
-  spinner.succeed('Docker image built');
+  await Promisify.spawner(
+    'docker',
+    [
+      'build',
+      '-t',
+      'conifer-test:latest',
+      '.',
+      '-f',
+      'Dockerfile.conifer',
+      '--platform',
+      'linux/amd64',
+    ],
+    'Building docker image...',
+    'Docker image built'
+  );
 };
 
 const ecrPolicy = JSON.stringify({
@@ -126,9 +127,8 @@ const pushToEcr = async () => {
     `aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${repo.repositoryUri}`
   );
 
-  spinner.start('Pushing image to your private AWS ECR...\n');
   const image = `${repo.repositoryUri}:latest`;
-  // Send image to config file
+
   fs.readFile(CONIFER_CONFIG_FILE, (err, data) => {
     const json = JSON.parse(data);
     json['imageUri'] = image;
@@ -137,9 +137,12 @@ const pushToEcr = async () => {
   });
 
   await Promisify.execute(`docker tag conifer-test:latest ${image}`);
-  // await Promisify.execute(`docker push ${image}`);
-  await Promisify.spawner('docker', ['push', image]);
-  spinner.succeed('Image pushed to ECR');
+  await Promisify.spawner(
+    'docker',
+    ['push', image],
+    'Pushing image to your private AWS ECR...',
+    'Image pushed to AWS ECR'
+  );
 };
 
 module.exports = {

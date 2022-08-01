@@ -1,4 +1,3 @@
-const Promisify = require('./promisify');
 const ora = require('ora');
 const fs = require('fs');
 const { v4 } = require('uuid');
@@ -11,14 +10,15 @@ const {
   CONIFER_CONFIG_FILE,
 } = require('./coniferConfig');
 const CDK_OUTPUTS_PATH = `${CONIFER_LOCAL_DIRECTORY}/cdk_outputs.json`;
-
 const {
   ECSClient,
   DescribeTasksCommand,
   RunTaskCommand,
 } = require('@aws-sdk/client-ecs');
 
-const spinner = ora();
+const spinner = ora({
+  color: 'green',
+});
 
 const POLLING_INTERVAL = 5000;
 const EMPTY = 0;
@@ -73,6 +73,7 @@ High level flow of runTestsInParallel command
 // const testRunId = createTestRunId();
 
 const testRunId = v4();
+
 const addtestRunIdToConfig = () => {
   fs.readFile(CONIFER_CONFIG_FILE, (err, data) => {
     const json = JSON.parse(data);
@@ -91,7 +92,6 @@ const runAllTasks = async (taskCommands, client) => {
     return results.map((result) => result.tasks[0].taskArn); // Make this better
   });
 };
-
 
 // <------------------ Extract later to own module
 const makeGlob = (files) => {
@@ -125,7 +125,7 @@ const runTestsInParallel = async () => {
               {
                 name: 'FILES_GLOB',
                 value: makeGlob(testGroupings[index]),
-              }
+              },
             ],
           },
         ],
@@ -168,15 +168,10 @@ const areTasksStopped = async (taskArns) => {
 };
 
 const pollDynamoForNewData = (testRunID) => {
-  //helper function for pollDynamoDb
   return setInterval(async () => {
     const newItems = await determineEntriesToUpdate(testRunID);
-    // console.log('newItems: ', newItems);
     if (newItems.length !== EMPTY) {
-      sendWebhooks(newItems);
-      // console.log('Initiating updates of dynamo!');
-    } else {
-      console.log('no new items to update');
+      sendWebhooks({ eventName: 'newItem', data: newItems });
     }
   }, POLLING_INTERVAL);
 };
@@ -199,7 +194,9 @@ const waitForTasksToComplete = async (taskArns, ...args) => {
 };
 
 const sendTestRunId = async () => {
-  sendWebhooks({ testRunId });
+  setTimeout(() => {
+    sendWebhooks({ eventName: 'newTestRunId', data: testRunId });
+  }, POLLING_INTERVAL);
 };
 
 module.exports = {

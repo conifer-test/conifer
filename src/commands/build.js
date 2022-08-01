@@ -16,7 +16,6 @@ module.exports = async () => {
   if (config.parallelType === 'File globbing') {
     await fileGlob();
   } else {
-    // TODO: Timing data
     await timingData();
   }
   await buildImage();
