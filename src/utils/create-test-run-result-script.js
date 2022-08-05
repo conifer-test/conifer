@@ -1,11 +1,15 @@
 const { merge } = require('mochawesome-merge');
 const marge = require('mochawesome-report-generator');
+const {
+  parseConfig,
+} = require('./coniferConfig');
 
 const generateFinalReport = () => {
+  const { testRunId } = parseConfig();
   console.log('Generating Parallel Test Results...');
 
   const mergeOptions = {
-    files: ['./coniferJSONReports/*.json'],
+    files: [`./coniferJSONReports/${testRunId}/results/*.json`],
   };
 
   const reporterOptions = {
