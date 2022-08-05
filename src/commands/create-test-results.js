@@ -9,7 +9,7 @@ const generateTestResults = () => {
   console.log(`${chalk.cyan('Generating your parallel test results now...')}`);
 
   downloadTestRunS3();
-  deleteTestRunS3();
+  // deleteTestRunS3();
   createTestRunResults();
 };
 
