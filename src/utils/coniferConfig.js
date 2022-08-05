@@ -4,7 +4,7 @@ const CONIFER_LOCAL_DIRECTORY = CWD + '/.conifer';
 const CONIFER_ENVIRONMENT_PATH = `${CONIFER_LOCAL_DIRECTORY}/.env`;
 const CONIFER_CONFIG_FILE = `${CONIFER_LOCAL_DIRECTORY}/conifer-config.json`;
 
-const parseConfig = async () => {
+const parseConfig = () => {
   return JSON.parse(fs.readFileSync(CONIFER_CONFIG_FILE));
 };
 

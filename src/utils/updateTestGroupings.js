@@ -36,7 +36,7 @@ const { allocateTestsFromObjects } = require('./optimalTestGroupings');
 */
 
 const updateTestGroupings = async () => {
-  const { testRunId, parallelInstances } = await parseConfig();
+  const { testRunId, parallelInstances } = parseConfig();
   console.log('testRunId:', testRunId);
 
   const testRunData = await getItemsByTestRunID(testRunId);

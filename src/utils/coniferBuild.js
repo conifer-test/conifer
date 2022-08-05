@@ -96,7 +96,7 @@ const ecrPolicy = JSON.stringify({
 });
 
 const pushToEcr = async () => {
-  const { awsRegion: region } = await parseConfig();
+  const { awsRegion: region } = parseConfig();
   const client = new ECRClient({ region });
   let repo;
 

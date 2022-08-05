@@ -2,8 +2,6 @@ const fs = require('fs');
 const { execSync } = require('child_process');
 const {
   CONIFER_LOCAL_DIRECTORY,
-  parseConfig,
-  CONIFER_CONFIG_FILE,
 } = require('./coniferConfig');
 const CDK_OUTPUTS_PATH = `${CONIFER_LOCAL_DIRECTORY}/cdk_outputs.json`;
 

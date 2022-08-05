@@ -4,7 +4,7 @@ const {
   parseConfig,
 } = require('./coniferConfig');
 
-const generateFinalReport = () => {
+const generateFinalReport = async () => {
   const { testRunId } = parseConfig();
   console.log('Generating Parallel Test Results...');
 

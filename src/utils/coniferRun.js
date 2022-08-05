@@ -103,7 +103,7 @@ const makeGlob = (files) => {
 };
 
 const runTestsInParallel = async () => {
-  const { awsRegion: region, testGroupings } = await parseConfig();
+  const { awsRegion: region, testGroupings } = parseConfig();
   const cdkOutputs = JSON.parse(fs.readFileSync(CDK_OUTPUTS_PATH));
 
   const client = new ECSClient({ region }); // dynamically populate the region
@@ -148,7 +148,7 @@ const runTestsInParallel = async () => {
 };
 
 const areTasksStopped = async (taskArns) => {
-  const { awsRegion: region } = await parseConfig();
+  const { awsRegion: region } = parseConfig();
   const cdkOutputs = JSON.parse(fs.readFileSync(CDK_OUTPUTS_PATH));
   const client = new ECSClient({ region });
 
@@ -178,7 +178,7 @@ const pollDynamoForNewData = (testRunID) => {
 
 const waitForTasksToComplete = async (taskArns, ...args) => {
   spinner.start('Waiting for tests to finish executing...');
-  const { testRunId } = await parseConfig();
+  const { testRunId } = parseConfig();
   const pollDynamo = pollDynamoForNewData(testRunId);
 
   const intervalId = setInterval(async () => {

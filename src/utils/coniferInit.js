@@ -68,7 +68,7 @@ const createConiferLocalDirectory = async () => {
 };
 
 const createStartShell = async () => {
-  const { ports, entryPoint } = await parseConfig();
+  const { ports, entryPoint } = parseConfig();
   let portsStr;
   portsStr = ports.map((port) => `npx wait-on http://localhost:${port}`);
   portsStr = portsStr.join(' && ');

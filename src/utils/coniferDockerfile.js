@@ -6,7 +6,7 @@ const { CWD } = require('./coniferConfig');
 const { parseConfig } = require('./coniferConfig');
 
 const createDockerfile = async () => {
-  const { packageManager } = await parseConfig();
+  const { packageManager } = parseConfig();
 
   const content = `# syntax = edrevo/dockerfile-plus
 
