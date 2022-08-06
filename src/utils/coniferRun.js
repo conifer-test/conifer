@@ -99,7 +99,7 @@ const makeGlob = (files) => {
     return path.parse(path.parse(filePath).name).name;
   });
   const filesNamesString = fileNames.join(',');
-  return `cypress/**/{${filesNamesString}}.{cy,spec}.{js,jsx,ts,tsx}`;
+  return `cypress/**/{${filesNamesString},}.{cy,spec}.{js,jsx,ts,tsx}`;
 };
 
 const runTestsInParallel = async () => {

@@ -78,7 +78,7 @@ const createStartShell = async () => {
 node .conifer/utils/observer.js & ${entryPoint} & ${portsStr} && \
 npx cypress run --reporter mochawesome --reporter-options \
 'reportDir=cypress/results,overwrite=false,reportFilename="[name]",html=false,json=true' \
---config 'specPattern=$FILES_GLOB'`;
+--config 'specPattern=$FILES_GLOB' && sleep 5`;
 
   spinner.start('Creating conifer-start.sh...');
   process.chdir(CWD);
