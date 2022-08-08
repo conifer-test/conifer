@@ -88,7 +88,6 @@ const runAllTasks = async (taskCommands, client) => {
   });
 
   return await Promise.all(runningTasks).then((results) => {
-    console.log('all tasks launched');
     return results.map((result) => result.tasks[0].taskArn); // Make this better
   });
 };

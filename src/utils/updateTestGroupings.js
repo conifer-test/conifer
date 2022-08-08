@@ -37,11 +37,14 @@ const { allocateTestsFromObjects } = require('./optimalTestGroupings');
 
 const updateTestGroupings = async () => {
   const { testRunId, parallelInstances } = parseConfig();
-  console.log('testRunId:', testRunId);
+  // console.log('testRunId:', testRunId);
 
   const testRunData = await getItemsByTestRunID(testRunId);
   // console.log('testRunData:', testRunData);
-  const testFileAllocations = allocateTestsFromObjects(testRunData, parallelInstances);
+  const testFileAllocations = allocateTestsFromObjects(
+    testRunData,
+    parallelInstances
+  );
   const coniferConfigFile = JSON.parse(readFileSync(CONIFER_CONFIG_FILE));
   coniferConfigFile.testGroupings = testFileAllocations;
   writeFileSync(CONIFER_CONFIG_FILE, JSON.stringify(coniferConfigFile));
