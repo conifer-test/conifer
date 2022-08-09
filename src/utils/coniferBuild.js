@@ -16,7 +16,7 @@ const { CONIFER_CONFIG_FILE, parseConfig } = require('./coniferConfig');
 const { createDockerfile } = require('./coniferDockerfile');
 
 const fileGlob = async () => {
-  spinner.start('Finding tests files to glob');
+  spinner.start('Finding tests files to glob...');
   const testFiles = await findAllTests();
   const [globbedFiles, parallelInstances] = groupTests(testFiles);
 
@@ -34,33 +34,33 @@ const fileGlob = async () => {
   spinner.succeed('Completed globbing files');
 };
 
-const minElem = (lst) => {
-  return lst.indexOf(Math.min(...lst));
-};
+// const minElem = (lst) => {
+//   return lst.indexOf(Math.min(...lst));
+// };
 
-const timingData = async (filesObj, parallelInstances) => {
-  // const fileAllocations = new Array(parallelInstances).fill().map(Object);
-  const fileAllocations = new Array(parallelInstances).fill().map(Array);
-  const totals = new Array(parallelInstances).fill(0);
+// const timingData = async (filesObj, parallelInstances) => {
+//   // const fileAllocations = new Array(parallelInstances).fill().map(Object);
+//   const fileAllocations = new Array(parallelInstances).fill().map(Array);
+//   const totals = new Array(parallelInstances).fill(0);
 
-  const filesList = Object.entries(filesObj).sort((a, b) => b[1] - a[1]);
-  for (const file of filesList) {
-    const currMinIndex = minElem(totals);
-    fileAllocations[currMinIndex].push(file[0]);
-    // fileAllocations[currMinIndex][file[0]] = file[1];
-    totals[currMinIndex] += file[1];
-  }
+//   const filesList = Object.entries(filesObj).sort((a, b) => b[1] - a[1]);
+//   for (const file of filesList) {
+//     const currMinIndex = minElem(totals);
+//     fileAllocations[currMinIndex].push(file[0]);
+//     // fileAllocations[currMinIndex][file[0]] = file[1];
+//     totals[currMinIndex] += file[1];
+//   }
 
-  return fileAllocations;
-};
+//   return fileAllocations;
+// };
 
-const allocateTestsFromObjects = (objects, parallelInstances) => {
-  //given list of objects with a given testRunID, returns the test alocations for
-  const newObj = {};
-  objects.forEach((obj) => (newObj[obj.testFileName] = obj.stats.duration));
-  // console.log('newObj: ', newObj);
-  return timingData(newObj, parallelInstances);
-};
+// const allocateTestsFromObjects = (objects, parallelInstances) => {
+//   //given list of objects with a given testRunID, returns the test alocations for
+//   const newObj = {};
+//   objects.forEach((obj) => (newObj[obj.testFileName] = obj.stats.duration));
+//   // console.log('newObj: ', newObj);
+//   return timingData(newObj, parallelInstances);
+// };
 
 const buildImage = async () => {
   await createDockerfile();
@@ -147,8 +147,8 @@ const pushToEcr = async () => {
 
 module.exports = {
   fileGlob,
-  timingData,
+  // timingData,
   buildImage,
   pushToEcr,
-  allocateTestsFromObjects,
+  // allocateTestsFromObjects,
 };

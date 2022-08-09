@@ -12,42 +12,9 @@ const {
   createStartShell,
   cloneDashboardRepo,
 } = require('../utils/coniferInit');
-const ora = require('ora');
 const path = require('path');
 const CWD = process.cwd();
-const spinner = ora({
-  color: 'green',
-});
-const {
-  CONIFER_ENVIRONMENT_PATH,
-  CONIFER_CONFIG_FILE,
-} = require('../utils/coniferConfig');
-
-const awsQuestions = [
-  {
-    type: 'password',
-    name: 'AWS_ACCESS_KEY',
-    message: 'AWS Access Key:',
-  },
-  {
-    type: 'password',
-    name: 'AWS_SECRET',
-    message: 'AWS Secret:',
-  },
-];
-
-const getAwsCred = async () => {
-  log('Please provide the following AWS credentials:');
-  await inquirer.prompt(awsQuestions).then(async (answers) => {
-    let envStr = '';
-    for (const [key, value] of Object.entries(answers)) {
-      envStr += key + '=' + value + '\n';
-    }
-    spinner.start();
-    writeFileSync(CONIFER_ENVIRONMENT_PATH, envStr);
-    spinner.succeed('Credentials saved to conifer environment\n');
-  });
-};
+const { CONIFER_CONFIG_FILE } = require('../utils/coniferConfig');
 
 const initQuestions = [
   {
@@ -95,12 +62,6 @@ const initQuestions = [
       { name: 'c6i.12xlarge - 48 vCPU & 96 GiB', value: 'c6i.12xlarge' },
     ],
   },
-  {
-    type: 'list',
-    name: 'parallelType',
-    message: 'How would you like to parallelize the tests:',
-    choices: ['File globbing', 'Timing data'],
-  },
 ];
 
 const gatherInfo = async () => {
@@ -128,7 +89,6 @@ const gatherInfo = async () => {
 
 const newInit = async () => {
   await createConiferLocalDirectory();
-  await getAwsCred();
   await gatherInfo();
   await createStartShell();
   await cloneFilesRepo();

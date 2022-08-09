@@ -22,13 +22,13 @@ const cloneDeployRepo = async () => {
   process.chdir(CONIFER_LOCAL_DIRECTORY);
   spinner.start(`Cloning ${DEPLOY_REPO}...`);
   await Promisify.execute(`git clone -q '${DEPLOY_REPO}' ${DEPLOY_DIRECTORY}`);
-  spinner.succeed(`${DEPLOY_REPO} successfully cloned`);
+  spinner.succeed('Deployment files successfully cloned');
 };
 
 const cloneFilesRepo = async () => {
-  spinner.start('Cloning files...');
+  spinner.start('Cloning watch files...');
   await Promisify.execute(`git clone -q ${CLONE_FILES_REPO} .conifer/utils`);
-  spinner.succeed('Files successfully cloned\n');
+  spinner.succeed('Watch files successfully cloned');
 };
 
 const cloneDashboardRepo = async () => {
@@ -43,7 +43,7 @@ const installDashboardRepo = async () => {
   await Promisify.execute('npm install');
   process.chdir(`${DASHBOARD_DIRECTORY}/client`);
   await Promisify.execute('npm install');
-  spinner.succeed('Packages successfully installed');
+  spinner.succeed('Dashboard packages successfully installed');
 };
 
 const installCDK = async () => {
@@ -80,6 +80,7 @@ npx cypress run --reporter mochawesome --reporter-options \
 'reportDir=cypress/results,overwrite=false,reportFilename="[name]",html=false,json=true' \
 --config 'specPattern=$FILES_GLOB' && sleep 5`;
 
+  console.log();
   spinner.start('Creating conifer-start.sh...');
   process.chdir(CWD);
   fs.writeFileSync('./conifer-start.sh', content);
