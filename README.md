@@ -1,4 +1,4 @@
-# [![Conifer-branding-logo](https://github.com/conifer-test/conifer-cli/blob/main/front_end/app/build/static/media/Conifer_logo_color.c2bd66fd.png)][github]
+# [![Conifer-branding-logo](https://conifer-test.github.io/images/logo/logo-name.svg)][github]
 
 [![shields.io npm version badge](https://img.shields.io/npm/v/conifer-test?style=flat&logo=npm)][npm]
 [![shields.io npm license badge](https://img.shields.io/npm/l/conifer-test?style=flat)][npm]
@@ -132,4 +132,4 @@ The above diagram shows the complete infrastructure of Conifer that is provision
 [npm]: https://www.npmjs.com/package/conifer-test
 [website]: https://conifer-test.github.io/
 [github]: https://github.com/conifer-test
-[architecture]: https://github.com/conifer-test/conifer-test.github.io/blob/main/assets/images/architecture/38_Conifer_Final_Architecture_withheadings.png
+[architecture]: https://raw.githubusercontent.com/conifer-test/conifer-test.github.io/main/images/diagrams/conifer_full_architecture.png
