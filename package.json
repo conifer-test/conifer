@@ -12,7 +12,8 @@
   "author": "Ahmad Jiha, Ainaa Sakinah, Lawrence Tam, Sam Harreschou",
   "license": "ISC",
   "devDependencies": {
-    "eslint": "^8.19.0"
+    "eslint": "^8.19.0",
+    "jest": "^29.0.1"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.131.0",

@@ -68,5 +68,6 @@ function allocateTestsFromObjects(objects, numNodes) {
 // };
 
 module.exports = {
+  allocateTests,
   allocateTestsFromObjects,
 };
