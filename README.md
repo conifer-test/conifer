@@ -70,9 +70,10 @@ npm i -g conifer-test
 The first command you want to run to setup your project is `init`.
 
 ### `conifer init`
+![conifer-init][conifer-init]
 
-**Note**: Please ensure you are in your project directory before running `conifer init`.
-
+> **Note** 
+> Please ensure you are in your project directory before running `conifer init`.
 - Conifer prompts you for the number of parallel instances you want provisioned and the type of AWS EC2 instance.
 - Conifer provisions a `.conifer` folder within your project directory and installs the necessary deployment and dashboard packages to deploy and run Conifer.
 - Creates a configuration file called `conifer-config.json` that stores prompt information.
@@ -87,11 +88,13 @@ The first command you want to run to setup your project is `init`.
 
 Conifer assumes your application already has a Dockerfile and will use your Dockerfile in combination with Conifer's Dockerfile.
 
-**Note**: In order for Conifer to use your Dockerfile, you will need to comment out your `FROM` instruction.
+> **Note**
+> In order for Conifer to use your Dockerfile, you will need to comment out your `FROM` instruction.
 
 ### `conifer build`
-
+![conifer-build][conifer-build]
 - Builds the Conifer image based on your Dockerfile and Conifer's Dockerfile to install the necessary dependencies needed to run your application and perform Cypress tests within a Docker container.
+- Once built, the image is automatically pushed to the your private AWS Elastic Container Registry (ECR).
 - Can be used to re-build if any changes were made to your application.
 
 ---
@@ -99,19 +102,31 @@ Conifer assumes your application already has a Dockerfile and will use your Dock
 ## Deploying Conifer
 
 ### `conifer deploy`
+![conifer-deploy][conifer-deploy]
 
 - Deploys the required AWS infrastructure using AWS CDK based on Conifer's configuration file.
 - Automatically launches the Conifer dashboard so you can see your test results live.
 
 ---
 
+## Running Tests on Conifer
+
+### `conifer run`
+- The local dashboard server and React front-end will automatically spin up and start receiving live test run result data for the user to view. The user will also have access to the videos recorded by Cypress within the dashboard.
+
+![conifer-run][conifer-run]
+
+
+---
 ## Teardown
 
 ### `conifer teardown`
+![conifer-teardown][conifer-teardown]
 
 Destroys most or all of the AWS infrastructure depending on prompt responses.
 
-**Note**: We do not destroy the Image stored on AWS ECR and the DynamoDB Table unless specified.
+> **Note**
+> We do not destroy the Image stored on AWS ECR and the DynamoDB Table unless specified.
 
 ---
 
@@ -133,3 +148,8 @@ The above diagram shows the complete infrastructure of Conifer that is provision
 [website]: https://conifer-test.github.io/
 [github]: https://github.com/conifer-test
 [architecture]: https://raw.githubusercontent.com/conifer-test/conifer-test.github.io/main/images/diagrams/conifer_full_architecture.png
+[conifer-init]: https://github.com/conifer-test/conifer-test.github.io/blob/main/images/diagrams/conifer_init.gif?raw=true
+[conifer-build]: https://github.com/conifer-test/conifer-test.github.io/blob/main/images/diagrams/conifer-build.gif?raw=true
+[conifer-deploy]: https://github.com/conifer-test/conifer-test.github.io/blob/main/images/diagrams/conifer-deploy3x.gif?raw=true
+[conifer-run]: https://github.com/conifer-test/conifer-test.github.io/blob/main/images/diagrams/live_dashboard.gif?raw=true
+[conifer-teardown]: https://github.com/conifer-test/conifer-test.github.io/blob/main/images/diagrams/conifer-td4x.gif?raw=true
